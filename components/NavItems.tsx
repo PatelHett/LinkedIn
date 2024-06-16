@@ -23,7 +23,7 @@ type NAVITEMS = {
 
 const navItems: NAVITEMS[] = [
   {
-    src: "/home",
+    src: "/",
     icon: <Home />,
     text: "Home",
   },
@@ -59,7 +59,9 @@ export default function NavItems() {
             className="flex flex-col items-center cursor-pointer text-[#666666] hover:text-black"
           >
             <span>{item.icon}</span>
-            <Link className="text-xs" href={item.src}>{item.text}</Link>
+            <Link className="text-xs" href={item.src}>
+              {item.text}
+            </Link>
           </div>
         );
       })}
