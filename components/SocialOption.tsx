@@ -4,7 +4,7 @@ import { MessageCircleMore, Repeat, Send, ThumbsUp } from 'lucide-react'
 import { IPostDocument } from '@/models/post.model';
 import { useUser } from '@clerk/nextjs';
 import Comments from './Comments';
-import CommentInput from './commentInput';
+import CommentInput from './CommentInput';
 
 const SocialOptions = ({ post }: { post: IPostDocument }) => {
     const { user } = useUser();
