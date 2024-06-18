@@ -10,6 +10,7 @@ import PostContent from "./PostContent";
 import SocialOption from "./SocialOption";
 import ReactTimeago from "react-timeago";
 import { deletePostAction } from "@/lib/serverActions";
+import { toast } from "sonner";
 
 const Post = ({ post }: { post: IPostDocument }) => {
   const { user } = useUser();
@@ -39,17 +40,29 @@ const Post = ({ post }: { post: IPostDocument }) => {
             </p>
           </div>
         </div>
-        {
-          isUser ? (<div>
-            <Button onClick={async()=> 
-            {const res = await deletePostAction((String)(post._id))
-            }} size={"icon"} className="rounded-full" variant={"outline"}>
+        {isUser ? (
+          <div>
+            <Button
+              onClick={async () => {
+                const promise = deletePostAction(String(post._id));
+                toast.promise(promise, {
+                  loading: "Deleting...",
+                  position: "top-right",
+                  success: "Post deleted successfully",
+                  error: "Failed to delete post. Please try again.",
+                  
+                });
+              }}
+              size={"icon"}
+              className="rounded-full"
+              variant={"outline"}
+            >
               <Trash2 />
             </Button>
-          </div>)
-          :
+          </div>
+        ) : (
           " "
-        }
+        )}
       </div>
       <PostContent post={post} />
       <SocialOption post={post} />

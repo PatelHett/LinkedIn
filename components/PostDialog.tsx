@@ -13,6 +13,8 @@ import { useRef, useState } from "react";
 import { readFileAsDataURL } from "@/lib/utils";
 import Image from "next/image";
 import { createPostAction } from "@/lib/serverActions";
+import { Toaster } from "./ui/sonner";
+import { toast } from "sonner";
 
 export function PostDialog({
   setOpen,
@@ -40,8 +42,7 @@ export function PostDialog({
     }
   };
 
-  const postActionHandler = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
+  const postActionHandler = async (formdata: FormData) => {
     setError(null);
     try {
       await createPostAction(inputText, selectedFile);
@@ -69,7 +70,17 @@ export function PostDialog({
             </div>
           </DialogTitle>
         </DialogHeader>
-        <form onSubmit={postActionHandler}>
+        <form
+          action={(formdata) => {
+            const promisee = postActionHandler(formdata);
+            toast.promise(promisee, {
+              loading: "Posting...",
+              position: "top-right",
+              success: "Post created successfully",
+              error: "Failed to create post. Please try again.",
+            });
+          }}
+        >
           <div className="flex flex-col">
             <Textarea
               id="name"
@@ -106,10 +117,7 @@ export function PostDialog({
             </div>
           </DialogFooter>
         </form>
-        <Button
-          className="gap-2"
-          onClick={() => inputRef?.current?.click()}
-        >
+        <Button className="gap-2" onClick={() => inputRef?.current?.click()}>
           <Images className="text-blue-500" />
           <p className="ml-1">Media</p>
         </Button>

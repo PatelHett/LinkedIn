@@ -1,12 +1,14 @@
 "use server";
 
 import { Post } from "@/models/post.model";
-import { IUser } from "@/models/user.model";
+import { IUser, User } from "@/models/user.model";
 import { currentUser } from "@clerk/nextjs/server";
 import { v2 as cloudinary } from "cloudinary";
 import connectDB from "./db";
 import { revalidatePath } from "next/cache";
 import { Comment, IComment } from "@/models/comment.model";
+import { NextRequest, NextResponse } from "next/server";
+import { toast } from "sonner";
 
 // Configuration
 cloudinary.config({
@@ -134,3 +136,18 @@ export const createCommentAction = async (postId: string, formData: FormData) =>
   }
 }
 
+// export default async function handler(email:string) {
+//   await connectDB();
+
+//   try {
+//     const user = await User.findById({email:email});
+//     console.log(user);
+//     if (!user) {
+//       toast.error('User not found');
+//     }
+//     NextResponse.json(user);
+//   } catch (error) {
+//     console.error(error);
+//     toast.error('An error occurred');
+//   }
+// }

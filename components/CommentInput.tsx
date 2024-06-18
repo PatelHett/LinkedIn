@@ -5,6 +5,7 @@ import { useUser } from "@clerk/nextjs";
 import { Input } from "./ui/input";
 import { Button } from "./ui/button";
 import { createCommentAction } from "@/lib/serverActions";
+import { toast } from "sonner";
 
 const CommentInput = ({ postId }: { postId: string }) => {
   const { user } = useUser();
@@ -14,6 +15,11 @@ const CommentInput = ({ postId }: { postId: string }) => {
     try {
       if (!user) throw new Error("User not authenticated");
       await createCommentAction(postId, formData);
+      toast.success("Comment added successfully", {
+        position: "top-right",
+        duration: 2000,
+      });
+
       setInputText("");
     } catch (error) {
       throw new Error("An error occured");
